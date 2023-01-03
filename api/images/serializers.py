@@ -29,7 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = ('email', 'username', 'first_name', 'last_name')
+        fields = ('id', 'email', 'username', 'first_name', 'last_name')
     
     
 class PatientSerializer(serializers.ModelSerializer):
@@ -37,23 +37,29 @@ class PatientSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Patient
-        fields = ('first_name', 'last_name', 'email')
+        fields = ('id', 'first_name', 'last_name', 'email')
     
     
 class ImageSerializer(serializers.ModelSerializer):
     
-    # file = serializers.FileField(validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'jpeg'])])   
+    # file = serializers.FileField(validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'jpeg'])])
+    
+    class Meta:
+        model = Image
+        fields = ('id', 'name', 'file_name', 'study')
+        
+    
+class ImageDetailSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     
     class Meta:
         model = Image
-        fields = ('name', 'file_name', 'study', 'comments')
+        fields = ('id', 'name', 'file_name', 'study', 'comments')
         
     def get_comments(self, obj):
         comments = obj.imagecomment_set.all()
         serializer = ImageCommentSerializer(comments, many=True)
-        return serializer.data
-   
+        return serializer.data  
     
 class StudySerializer(serializers.ModelSerializer):
     
@@ -62,7 +68,7 @@ class StudySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Study
-        fields = ('title', 'description', 'patient', 'images')
+        fields = ('id', 'title', 'description', 'patient', 'images')
         
     def get_images(self, obj):
         images = obj.image_set.all()
@@ -76,4 +82,4 @@ class ImageCommentSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ImageComment
-        fields = ('comment', 'user', 'created_at')
+        fields = ('id', 'comment', 'user', 'created_at')

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RegisterView, PatientView, StudyView, ImageView, ImageCommentView
+from .views import RegisterView, PatientView, StudyView, ImageView, ImageDetailView, ImageCommentView
 from rest_framework.authtoken import views
 
 urlpatterns = [
@@ -8,5 +8,6 @@ urlpatterns = [
     path('patients', PatientView.as_view(), name='patients'),
     path('studies', StudyView.as_view(), name='studies'),    
     path('images', ImageView.as_view(), name='images'),
+    path('images/<int:pk>', ImageDetailView.as_view(), name='images_detail'),
     path('images/<int:image_id>/comments', ImageCommentView.as_view(), name='images_comments')
 ]

@@ -3,7 +3,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
-from .serializers import RegisterSerializer, PatientSerializer, StudySerializer, ImageSerializer, ImageCommentSerializer
+from .serializers import RegisterSerializer, PatientSerializer, StudySerializer, ImageSerializer, ImageCommentSerializer, \
+    ImageDetailSerializer
 from .models import User, Patient, Study, Image, ImageComment
 
 # Create your views here.
@@ -59,6 +60,10 @@ class ImageView(generics.ListCreateAPIView):
             return Response({'message': 'Error uploading image'})
         
         serializer.save()
+        
+class ImageDetailView(generics.RetrieveAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageDetailSerializer
         
 class ImageCommentView(generics.ListCreateAPIView):
     

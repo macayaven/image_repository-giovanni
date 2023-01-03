@@ -38,3 +38,11 @@ class ImageTestCase(LoggedInTestCase):
         
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), Image.objects.count())
+        
+    def test_detail_image(self):
+        response = self.client.get(reverse('images_detail', kwargs={'pk': self.image.id}))
+        
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get('id'), self.image.id)
+        self.assertEqual(response.data.get('name'), self.image.name)
+        

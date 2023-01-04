@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
 
 from ..models import Patient, Study, Image
@@ -22,13 +23,16 @@ class ImageTestCase(LoggedInTestCase):
         
     def test_create_image(self):
         
+        file_obj = SimpleUploadedFile('file.jpg', b'file contents')
+        
         image_input = {
             'name':'Imagen 2',
             'file_name':'Imagen 2',
-            'study': self.study.id       
+            'study': self.study.id,
+            'file': file_obj
         }
         
-        response = self.client.post(reverse('images'), image_input)
+        response = self.client.post(reverse('images'), data=image_input, format='multipart')
         
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Image.objects.count(), 2)

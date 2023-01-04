@@ -42,11 +42,15 @@ class PatientSerializer(serializers.ModelSerializer):
     
 class ImageSerializer(serializers.ModelSerializer):
     
-    # file = serializers.FileField(validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'jpeg'])])
+    file = serializers.FileField(write_only=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'jpeg'])])
     
     class Meta:
         model = Image
-        fields = ('id', 'name', 'file_name', 'study')
+        fields = ('id', 'name', 'file_name', 'file', 'study')
+        
+    def create(self, validated_data):
+        validated_data.pop('file')
+        return Image.objects.create(**validated_data)
         
     
 class ImageDetailSerializer(serializers.ModelSerializer):

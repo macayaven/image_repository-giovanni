@@ -3,3 +3,4 @@ django-rest-framework
 python-dotenv
 mysqlclient
 django-mysql
+azure-storage-blob

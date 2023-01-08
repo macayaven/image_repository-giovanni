@@ -37,19 +37,21 @@ class PatientSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Patient
-        fields = ('id', 'first_name', 'last_name', 'email')
+        fields = ('id', 'first_name', 'last_name', 'email', 'full_name')
     
     
 class ImageSerializer(serializers.ModelSerializer):
     
     file = serializers.FileField(write_only=True, validators=[FileExtensionValidator(allowed_extensions=['jpg', 'png', 'jpeg'])])
+    file_name = serializers.CharField(read_only=True)
     
     class Meta:
         model = Image
-        fields = ('id', 'name', 'file_name', 'file', 'study')
+        fields = ('id', 'name', 'file', 'file_name', 'study', 'study_title', 'patient_full_name', 'url')
         
     def create(self, validated_data):
-        validated_data.pop('file')
+        file = validated_data.pop('file')
+        validated_data['file_name'] = file.name
         return Image.objects.create(**validated_data)
         
     
@@ -58,7 +60,7 @@ class ImageDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Image
-        fields = ('id', 'name', 'file_name', 'study', 'comments')
+        fields = ('id', 'name', 'file_name', 'study', 'study_title', 'patient_full_name', 'url', 'comments')
         
     def get_comments(self, obj):
         comments = obj.imagecomment_set.all()
@@ -82,8 +84,8 @@ class StudySerializer(serializers.ModelSerializer):
 
 class ImageCommentSerializer(serializers.ModelSerializer):
 
-    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    #user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     
     class Meta:
         model = ImageComment
-        fields = ('id', 'comment', 'user', 'created_at')
+        fields = ('id', 'comment', 'user_email', 'user_full_name', 'created_at')

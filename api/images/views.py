@@ -10,7 +10,6 @@ from .serializers import RegisterSerializer, PatientSerializer, StudySerializer,
     ImageDetailSerializer
 from .models import User, Patient, Study, Image, ImageComment
 
-# Create your views here.
 
 class RegisterView(generics.CreateAPIView):
     
@@ -20,15 +19,16 @@ class RegisterView(generics.CreateAPIView):
     # I decided to bring this here for organization purposes
     def perform_create(self, serializer):
         user = User.objects.create(
-            username=serializer.data.get('username'),
-            email=serializer.data.get('email'),
-            first_name=serializer.data.get('first_name'),
-            last_name=serializer.data.get('last_name')
+            username=serializer.validated_data.get('username'),
+            email=serializer.validated_data.get('email'),
+            first_name=serializer.validated_data.get('first_name'),
+            last_name=serializer.validated_data.get('last_name')
         )
-        user.set_password(serializer.data.get('password'))
+        user.set_password(serializer.validated_data.get('password'))
         user.save()
         
         return Response(None, status=status.HTTP_201_CREATED)
+
 
 class PatientView(generics.ListCreateAPIView):
     queryset = Patient.objects.all()
@@ -68,6 +68,7 @@ class ImageView(generics.ListCreateAPIView):
 class ImageDetailView(generics.RetrieveAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageDetailSerializer
+        
         
 class ImageCommentView(generics.ListCreateAPIView):
     

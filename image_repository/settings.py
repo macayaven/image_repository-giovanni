@@ -29,8 +29,10 @@ SECRET_KEY = 'django-insecure-&z_mius6tshz@vd^c^w*b^7s*1g7b62p)oroj-&su+!oim=tmj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -43,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'api.images'
+    'api.images',
+    'corsheaders'
 ]
 
 AUTH_USER_MODEL = 'images.User'
@@ -56,6 +59,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware'
 ]
 
 REST_FRAMEWORK = {
@@ -145,3 +149,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Azure Storage
 
 AZURE_CONNECTION_STRING = os.getenv('AZURE_CONNECTION_STRING')
+AZURE_ACCOUNT_NAME = os.getenv('AZURE_ACCOUNT_NAME')
+AZURE_CONTAINER_NAME = os.getenv('AZURE_CONTAINER_NAME')
+AZURE_API_URL = os.getenv('AZURE_API_URL').replace('<account>', AZURE_ACCOUNT_NAME).replace('<container>', AZURE_CONTAINER_NAME)

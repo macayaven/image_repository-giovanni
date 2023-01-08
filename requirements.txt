@@ -4,3 +4,4 @@ python-dotenv
 mysqlclient
 django-mysql
 azure-storage-blob
+django-cors-headers

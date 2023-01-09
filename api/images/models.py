@@ -3,6 +3,7 @@ from django.conf import settings
 
 from django.contrib.auth.models import AbstractUser
 
+
 class User(AbstractUser):
     email = models.EmailField('Email Address', unique=True)
     
@@ -12,6 +13,7 @@ class User(AbstractUser):
     @property
     def full_name(self):
         return self.first_name + ' ' + self.last_name
+
 
 class Patient(models.Model):
     
@@ -23,6 +25,7 @@ class Patient(models.Model):
     @property
     def full_name(self):
         return self.first_name + ' ' + self.last_name
+
     
 class Study(models.Model):
     
@@ -35,6 +38,7 @@ class Study(models.Model):
     class Meta:
         unique_together = ('title', 'patient',)
     
+    
 class Image(models.Model):
     
     name = models.CharField(max_length=255)
@@ -42,6 +46,7 @@ class Image(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     study = models.ForeignKey(Study, on_delete=models.CASCADE)
+    
     
     class Meta:
         unique_together = (('name', 'study',), ('file_name', 'study',),)

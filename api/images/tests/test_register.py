@@ -5,6 +5,7 @@ from rest_framework.test import APITestCase, APIClient
 from ..models import User
 from . import BaseTestCase
 
+
 class RegisterTestCase(BaseTestCase):
     
     @classmethod
@@ -20,7 +21,6 @@ class RegisterTestCase(BaseTestCase):
         cls.registered_user.set_password('password')
         cls.registered_user.save()
     
-        
     def test_signup(self):
         
         register_input = {

@@ -65,6 +65,7 @@ class ImageView(generics.ListCreateAPIView):
         
         serializer.save()
         
+        
 class ImageDetailView(generics.RetrieveAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageDetailSerializer

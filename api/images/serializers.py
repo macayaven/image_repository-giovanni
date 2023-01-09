@@ -6,6 +6,7 @@ from django.core.validators import FileExtensionValidator
 
 from .models import User, Study, Patient, Image, ImageComment
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     
     email = serializers.EmailField(validators=[UniqueValidator(queryset=User.objects.all())])
@@ -24,6 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             })
         
         return attrs
+    
     
 class UserSerializer(serializers.ModelSerializer):
     
@@ -67,6 +69,7 @@ class ImageDetailSerializer(serializers.ModelSerializer):
         serializer = ImageCommentSerializer(comments, many=True)
         return serializer.data  
     
+    
 class StudySerializer(serializers.ModelSerializer):
     
     description = serializers.CharField(required=False)
@@ -84,8 +87,6 @@ class StudySerializer(serializers.ModelSerializer):
 
 class ImageCommentSerializer(serializers.ModelSerializer):
 
-    #user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    
     class Meta:
         model = ImageComment
         fields = ('id', 'comment', 'user_email', 'user_full_name', 'created_at')

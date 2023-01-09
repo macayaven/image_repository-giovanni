@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-&z_mius6tshz@vd^c^w*b^7s*1g7b62p)oroj-&su+!oim=tmj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['gioalcamo-image-repository-api.azurewebsites.net']
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -102,9 +102,17 @@ DATABASES = {
         'USER': os.environ.get('DB_USERNAME', 'root'),
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': os.environ.get('DB_HOST', 'localhost'),
-        'PORT': os.environ.get('DB_PORT', '3306')
+        'PORT': os.environ.get('DB_PORT', '3306'),
+        'OPTIONS': {}
     }
 }
+
+# Database options will have the following format: key1_value1,key2_value2,etc
+db_options = os.environ.get('DB_OPTIONS', '').split(',')
+if db_options is not '':
+    for item in os.environ.get('DB_OPTIONS', '').split(','):
+        key, value = item.split('_')
+        DATABASES['default']['OPTIONS'].update({key: value})
 
 
 # Password validation

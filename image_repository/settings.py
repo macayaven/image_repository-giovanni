@@ -108,9 +108,9 @@ DATABASES = {
 }
 
 # Database options will have the following format: key1_value1,key2_value2,etc
-db_options = os.environ.get('DB_OPTIONS', '').split(',')
-if db_options is not '':
-    for item in os.environ.get('DB_OPTIONS', '').split(','):
+db_options = os.environ.get('DB_OPTIONS', '')
+if db_options != '':
+    for item in db_options.split(','):
         key, value = item.split('_')
         DATABASES['default']['OPTIONS'].update({key: value})
 

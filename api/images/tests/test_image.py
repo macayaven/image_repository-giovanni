@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 from rest_framework import status
+import uuid
 
 from ..models import Patient, Study, Image
 from . import LoggedInTestCase
@@ -22,12 +23,12 @@ class ImageTestCase(LoggedInTestCase):
         cls.image.save()
         
     def test_create_image(self):
+        unique_name = str(uuid.uuid4())
         
-        file_obj = SimpleUploadedFile('file.jpg', b'file contents')
+        file_obj = SimpleUploadedFile(f"test_{unique_name}.jpg", b'file contents')
         
         image_input = {
             'name':'Imagen 2',
-            'file_name':'Imagen 2',
             'study': self.study.id,
             'file': file_obj
         }
